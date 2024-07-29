@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./script.js" async></script>
+    <title>Seeing Signs</title>
+  </head>
+  <body>
+      <div class="instruction-bar">
+        <div class="left">Timer</div>
+        <div class="center">
+          <h1>Seeing Signs</h1>
+          <p id="roundCounter"></p>
+          <p id="instructions">Find the following sign on the poles below:</p>
+          <div class="notify-sign"></div>
+        </div>
+      <div class="right">
+        <div id="score">Score: 0</div>
+        <div id="highScore">High Score: 0</div>
+      </div>
+      </div>
+      <div class="play-container"></div>
+      <div id="road-container"></div>
+      
+      <div id="gameOverModal" class="game-over-modal" style="display: none;">
+        <div class="modal-content">
+            <h2 class="game-over-text"></h2>
+            <div class="exit-sign-container">
+                <p class="exit-text"></p>
+                <p class="highway-text"></p>
+                <div class="arrow">
+                    <div class="arrow-body"></div>
+                    <div class="arrow-head"></div>
+                </div>
+            </div>
+        </div>
+      </div>
+  </body>
+</html>
+
+

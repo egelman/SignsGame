@@ -1,0 +1,295 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    font-family: "Highway Gothic", sans-serif;
+    color: white;
+  }
+  
+  .notify-sign {
+    border: solid;
+    border-radius: 5%;
+    padding: 5px;
+    border-color: rgb(111, 169, 219);
+    border-width: 2px;
+  }
+  
+  body {
+    background-image: url("./assets/sky.jpg");
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .play-container {
+    margin-top: 20px;
+    background-color: hsla(0, 100%, 50%, 0);
+    width: 75%;
+    max-width: 1100px;
+    height: 300px;
+    max-height: 500px;
+    overflow: visible;
+    position: relative;
+  }
+  
+  .pole {
+    position: absolute;
+    background: linear-gradient(to right, #333, #ccc);
+    width: 7px;
+  }
+  
+  .instruction-bar {
+    display: flex;
+    gap: 200px;
+  }
+  
+  .center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .right, .left {  text-align: center;
+  font-size: 25px;}
+  
+  .left {
+    color: rgb(241, 59, 59);
+    border: solid;
+    border-radius: 10%;
+    padding: 5px;
+    border-color: rgb(241, 59, 59);
+    border-width: 2px;
+    padding-left: 8px;
+    padding-right: 8px;
+    max-height: 30px;
+    background-color: aliceblue;
+  
+  
+  
+  }
+  #road-container {
+    width: 100%;
+    height: 60vh;
+    background-image: url("./assets/road.png");
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    z-index: 0;
+  }
+  
+  .test-child {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    background-color: black;
+    width: 100px;
+    height: 100px;
+  }
+  
+  @font-face {
+    font-family: "Highway Gothic";
+    src: url("./assets/fonts/HWYGOTH.TTF") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  #road-container {
+    width: 100%;
+    height: 60vh;
+    background-image: url("./assets/road.png");
+    background-size: cover;
+    background-position: center;
+  }
+  
+  #instructions {
+    font-size: large;
+    margin-top: 10px;
+  }
+  
+  
+  /* Game Over Modal Styles */
+  .game-over-modal {
+    position: fixed;    
+    max-width: 400px; 
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    top: 50%;        
+    left: 50%;
+    bottom: 50%;
+    transform: translate(-50%, -20%);
+  }
+  
+  .modal-content {
+    width: 300px;
+    padding: 20px;
+    background-color: #4CAF50;
+    border: 2px solid white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: "Highway Gothic", sans-serif;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .game-over-text {
+    margin-bottom: 20px;
+    font-size: 28px;
+  }
+  
+  .exit-sign-container {
+    border: 4px solid white;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .exit-text {
+    font-size: 24px;
+    margin-bottom: 5px;
+  }
+  
+  .highway-text {
+    font-size: 20px;
+  }
+  
+  .arrow {
+    width: 40px;
+    height: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .arrow-body {
+    width: 20px;
+    height: 42px;
+    background-color: white;
+    position: absolute;
+    left: 10px;
+    top: 0;
+  }
+  
+  .arrow-head {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 20px solid white;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+  
+  .dirt-left,
+  .dirt-right {
+    background-color: rgb(255, 255, 255);
+    flex: 1;
+    height: 100%;
+    position: relative;
+  }
+  
+  .dirt-left {
+    border-right: black;
+    border-right: double;
+    border-width: 20px;
+  }
+  
+  .dirt-right {
+    border-left: black;
+    border-left: double;
+    border-width: 20px;
+  }
+  
+  .road {
+    display: flex;
+    width: 500px;
+    position: relative;
+    background-color: white;
+    z-index: -2;
+  }
+  
+  .lane {
+    background-color: hsla(0, 78%, 48%, 0);
+    border: dashed;
+    border-color: black;
+    border-top: none;
+    border-bottom: none;
+    flex: 1;
+  }
+  
+  .car {
+    position: absolute;
+    height: 120px;
+    width: 90px;
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+  }
+  
+  .ascii-art {
+    font-family: monospace;
+  }
+  
+  .obstacle {
+    position: absolute;
+    z-index: -1;
+    width: 80px;
+    height: 40px;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .game-status-sign {
+    display: flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    border-radius: 25px;
+    padding: 25px;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-family: monospace;
+    text-align: center;
+  }
+  
+  .game-status-sign:focus {
+    border: double;
+    border-width: 10px;
+  }
+  
+  .highway-sign {
+    position: absolute;
+    width: 100%;
+    display: none;
+    z-index: 2;
+  }
+  
+  .scenery {
+    background-color: black;
+    width: fit-content;
+    font-weight: bold;
+    padding: 20px;
+    color: white;
+    font-size: x-large;
+  }
+  
