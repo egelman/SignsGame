@@ -374,7 +374,7 @@ function createPointsAnimation(amount, isPositive) {
   const pointsAdded = document.createElement("div");
   pointsAdded.className = 'points-animation';
   pointsAdded.textContent = isPositive ? `+${amount}` : `-${amount}`;
-  pointsAdded.style.color = isPositive ? 'green' : 'red';
+  pointsAdded.style.color = isPositive ? '#14e40d' : '#e5232a';
   
   // Position the animation element
   const rect = scoreElement.getBoundingClientRect();
@@ -472,15 +472,24 @@ function calculateBoundingBox(positions, elements) {
 }
 
 function updateTimerDisplay() {
-  const timerElement = document.querySelector(".left");
-  if (timerElement) {
-    timerElement.textContent = `Timer: ${timer}`;
+  const timerValueElement = document.getElementById("timerValue");
+  if (timerValueElement) {
+    timerValueElement.textContent = timer;
+    // Add the pulse animation
+    timerValueElement.classList.add('pulse');
+    // Remove the pulse class after the animation completes
+    setTimeout(() => {
+      timerValueElement.classList.remove('pulse');
+    }, 300); // This should match the animation duration
   }
 }
 
 function endGame() {
   endGameState();
   checkHighScore();
+  const timerElement = document.querySelector('.left');
+  timerElement.style.borderColor = 'rgba(241, 59, 59, 0)';
+  timerElement.innerHTML =' ';
   clearInterval(timerInterval);
   showGameOverModal();
   if (score > highScore) {
@@ -543,16 +552,29 @@ function updateModal() {
     console.log("Restarting game...");
     //set score and round to 0 when restarting
     endGameState();
-    //modal.style.display = 'none';
-    //restartGame();
   });
 
   console.log(actionContainer); // Log to ensure updates are made
 }
 
+function restartGame() {
+  const modal = document.getElementById("gameOverModal");
+  const signs = document.querySelector(".play-container");
+  const notify = document.querySelector(".notify-sign");
+  const instr = document.querySelector("#instructions");
+
+  //clear gameplay
+  notify.innerHTML = "";
+  notify.style.border = "none";
+  instr.innerHTML = "";
+  poleContainer.innerHTML = "";
+  signs.innerHTML = "";
+}
+
+
 function runTimer() {
   clearInterval(timerInterval);
-  timer = 5;
+  timer = 4;
   updateTimerDisplay();
 
   timerInterval = setInterval(() => {
