@@ -362,16 +362,46 @@ async function populateGame() {
 }
 
 function correctClick(){
-  updateUI();
   const remainingTime = timer;
   addPoints(remainingTime);
+  updateUI();
 }
 
+function createPointsAnimation(amount, isPositive) {
+  const scoreElement = document.getElementById("score");
+  if (!scoreElement) return; // Exit if score element doesn't exist
+
+  const pointsAdded = document.createElement("div");
+  pointsAdded.className = 'points-animation';
+  pointsAdded.textContent = isPositive ? `+${amount}` : `-${amount}`;
+  pointsAdded.style.color = isPositive ? 'green' : 'red';
+  
+  // Position the animation element
+  const rect = scoreElement.getBoundingClientRect();
+  pointsAdded.style.position = 'absolute';
+  pointsAdded.style.left = `${rect.left}px`;
+  pointsAdded.style.top = `${rect.bottom + 5}px`; // 5px below the score element
+  
+  document.body.appendChild(pointsAdded);
+
+  // Start the animation
+  requestAnimationFrame(() => {
+    pointsAdded.style.transform = `translateY(-${rect.height + 10}px)`;
+    pointsAdded.style.opacity = '0';
+    pointsAdded.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
+  });
+
+  // Remove the element after animation
+  setTimeout(() => {
+    pointsAdded.remove();
+  }, 1000);
+}
 
 function losePoints(int) {
   score -= int;
   sessionStorage.setItem("currentScore", score.toString());
   updateScoreDisplay();
+  createPointsAnimation(int, false);
   if (score < 0) {
     endGame();
   }
@@ -381,7 +411,10 @@ function addPoints(int) {
   score += int;
   sessionStorage.setItem("currentScore", score.toString());
   updateScoreDisplay();
+  createPointsAnimation(int, true);
 }
+
+
 
 
 function loadHighScore() {

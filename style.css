@@ -293,3 +293,21 @@
     font-size: x-large;
   }
   
+
+  .points-animation {
+    position: absolute;
+    font-size: 1.2em; 
+    z-index: 1000; 
+    pointer-events: none; /* Prevents the animation from interfering with clicks */
+  }
+
+@keyframes moveUpAndFade {
+    0% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50px); 
+    }
+}
