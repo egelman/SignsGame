@@ -61,7 +61,7 @@
     border: solid;
     border-radius: 10%;
     padding: 5px;
-    border-color: rgb(241, 59, 59);
+    border-color: #f13b3b;
     border-width: 2px;
     padding-left: 8px;
     padding-right: 8px;
@@ -71,12 +71,14 @@
   
   }
   #road-container {
-    width: 100%;
-    height: 60vh;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 50%;
     background-image: url("./assets/road.png");
     background-size: cover;
     background-position: center;
-    position: relative;
     z-index: 0;
   }
   

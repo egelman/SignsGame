@@ -18,6 +18,7 @@ const maxSignSize = 180; // Limits the sign size in pixels
 let timer = 5;
 let timerInterval;
 let notifySrc = "";
+let newGame = true; 
 
 //INITIALIZE GAME STATE
 
@@ -474,7 +475,7 @@ function calculateBoundingBox(positions, elements) {
 function updateTimerDisplay() {
   const timerValueElement = document.getElementById("timerValue");
   if (timerValueElement) {
-    timerValueElement.textContent = timer;
+    timerValueElement.textContent = "  " + timer;
     // Add the pulse animation
     timerValueElement.classList.add('pulse');
     // Remove the pulse class after the animation completes
@@ -485,11 +486,15 @@ function updateTimerDisplay() {
 }
 
 function endGame() {
-  endGameState();
+  gameStatus = false;
+  sessionStorage.setItem("gameStatus", gameStatus.toString());
+
   checkHighScore();
+
   const timerElement = document.querySelector('.left');
   timerElement.style.borderColor = 'rgba(241, 59, 59, 0)';
-  timerElement.innerHTML =' ';
+  timerElement.style.visibility ='hidden';
+
   clearInterval(timerInterval);
   showGameOverModal();
   if (score > highScore) {
@@ -505,11 +510,11 @@ function showGameOverModal() {
   const instr = document.querySelector("#instructions");
 
   //clear gameplay
-  notify.innerHTML = "";
+  signs.style.visibility = "hidden";
+  notify.style.display = "none";
   notify.style.border = "none";
-  instr.innerHTML = "";
-  poleContainer.innerHTML = "";
-  signs.innerHTML = "";
+  poleContainer.innerHTML= "";
+  instr.style.display = "none";
 
   console.log(signs);
   const stateText = document.querySelector(".game-over-text");
@@ -535,7 +540,15 @@ function updateModal() {
   arrow.style.display = "none";
 
   const stateText = document.querySelector(".game-over-text");
-  stateText.innerHTML = "High Score: " + highScore;
+  if (score > highScore) {
+    stateText.innerHTML = "New High Score! " + highScore;
+  } else {
+    stateText.innerHTML = "Your Score: " + score;
+    const hsDisplay = document.createElement("div");
+    hsDisplay.innerHTML = " High Score: " + highScore;
+    stateText.appendChild(hsDisplay);
+  }
+  
 
   const exit = document.querySelector(".exit-text");
   exit.innerHTML = "PLAY";
@@ -551,7 +564,9 @@ function updateModal() {
   actionContainer.addEventListener("click", function () {
     console.log("Restarting game...");
     //set score and round to 0 when restarting
-    endGameState();
+    endGame();
+    restartGame();
+    newGame = true; 
   });
 
   console.log(actionContainer); // Log to ensure updates are made
@@ -562,13 +577,31 @@ function restartGame() {
   const signs = document.querySelector(".play-container");
   const notify = document.querySelector(".notify-sign");
   const instr = document.querySelector("#instructions");
+  
+  //get rid of pop up modal
+  modal.style.display = 'none';
 
-  //clear gameplay
-  notify.innerHTML = "";
-  notify.style.border = "none";
-  instr.innerHTML = "";
-  poleContainer.innerHTML = "";
-  signs.innerHTML = "";
+  //reinstate timer
+  const timerElement = document.querySelector('.left');
+  timerElement.style.visibility = 'visible';
+  timerElement.style.borderColor = '#f13b3b';
+
+  //make blocks visible again
+  signs.style.visibility = 'visible';
+  notify.style.display = 'flex';
+  instr.style.display = 'flex';
+
+
+  // Reset game state
+  score = 0;
+  roundNumber = 0;
+  numSigns = 10;
+
+  updateScoreDisplay();
+  updateRoundDisplay(roundNumber);
+
+  newGame = true;
+  updateUI();
 }
 
 
@@ -576,6 +609,7 @@ function runTimer() {
   clearInterval(timerInterval);
   timer = 4;
   updateTimerDisplay();
+  newGame = false;
 
   timerInterval = setInterval(() => {
     timer--;
@@ -597,48 +631,19 @@ function updateScoreDisplay() {
 
 //separated into a function so it can also include updates to the scenes as we implement them
 function updateUI() {
+  if (newGame) {
+    roundNumber = 0;
+    score = 0;
+    const timerElement = document.querySelector('.left');
+    timerElement.style.display = 'flex';
+  }
   nextRound();
   runTimer();
 }
 
-updateUI();
-/*
-function switchToMovement() {
-  document.getElementById("signPart").style.display = "none";
-  document.getElementById("movementPart").style.display = "block";
+function startGame() {
+  updateUI();
 }
-
-function switchToSigns() {
-  document.getElementById("movementPart").style.display = "none";
-  document.getElementById("signPart").style.display = "block";
-}
-*/
-
-//initializing game state
-/*
-function initializeGameState() {
-  let storedScore = sessionStorage.getItem("currentScore");
-  let storedRound = sessionStorage.getItem("currentRound");
-  let storedGameActive = sessionStorage.getItem("gameActive");
-
-  if (
-    storedScore === null ||
-    storedRound === null ||
-    storedGameActive === null
-  ) {
-    score = 0; // Default starting score
-    roundNumber = 0; // Starting at the first round
-    gameActive = false; // Game starts as inactive
-  } else {
-    score = parseInt(storedScore, 10);
-    roundNumber = parseInt(storedRound, 10);
-    gameActive = storedGameActive === "true";
-  }
-
-  updateScoreDisplay();
-  updateRoundDisplay();
-}
-  */
 
 //both score and highscore always on display
 function updateScoreDisplay() {
@@ -677,12 +682,7 @@ function updateHighScoreDisplay() {
   }
 }
 
-function endGameState() {
-  gameStatus = false;
-  sessionStorage.setItem("currentScore", "0");
-  sessionStorage.setItem("currentRound", "0");
-  sessionStorage.setItem("gameStatus", gameStatus.toString());
-}
+
 
 function checkHighScore() {
   const storedHighScore = parseInt(
@@ -691,7 +691,7 @@ function checkHighScore() {
   );
   if (score > storedHighScore) {
     localStorage.setItem("highScore", score.toString());
-    //updateHighScoreDisplay();  // Update UI with new high score
+    updateHighScoreDisplay();  
   }
 }
 
@@ -703,3 +703,5 @@ document.addEventListener("DOMContentLoaded", function() {
   loadHighScore();
   updateScoreDisplay();
 });
+
+window.addEventListener('load', startGame);
