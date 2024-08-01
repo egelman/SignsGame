@@ -503,6 +503,9 @@ function endGame() {
   console.log("Game ended, modal should be visible");
 }
 
+let modalClickHandler = null;
+let actionContainerClickHandler = null;
+
 function showGameOverModal() {
   const modal = document.getElementById("gameOverModal");
   const signs = document.querySelector(".play-container");
@@ -527,9 +530,18 @@ function showGameOverModal() {
   highway.innerHTML = "HIGHWAY";
 
   modal.style.display = "block";
-  modal.addEventListener("click", () => {
+
+
+  // Remove existing listener if any
+  if (modalClickHandler) {
+    modal.removeEventListener("click", modalClickHandler);
+  }
+
+  // Create a new handler and add it
+  modalClickHandler = () => {
     updateModal();
-  });
+  };
+  modal.addEventListener("click", modalClickHandler);
 }
 
 function updateModal() {
@@ -561,7 +573,14 @@ function updateModal() {
   // Update for high score and play again
 
   // Add event listener to PLAY AGAIN text
-  actionContainer.addEventListener("click", handleRestart);
+  // Remove existing listener if any
+  if (actionContainerClickHandler) {
+    actionContainer.removeEventListener("click", actionContainerClickHandler);
+  }
+
+  // Create a new handler and add it
+  actionContainerClickHandler = handleRestart;
+  actionContainer.addEventListener("click", actionContainerClickHandler);
 
   console.log(actionContainer); // Log to ensure updates are made
 }
@@ -588,7 +607,16 @@ function restartGame() {
   notify.style.display = 'flex';
   instr.style.display = 'flex';
 
-
+  //reset modal events
+  if (modalClickHandler) {
+    modal.removeEventListener("click", modalClickHandler);
+    modalClickHandler = null;
+  }
+  if (actionContainerClickHandler) {
+    actionContainer.removeEventListener("click", actionContainerClickHandler);
+    actionContainerClickHandler = null;
+  }
+  
   // Reset game state
   score = 0;
   roundNumber = 0;
