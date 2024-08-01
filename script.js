@@ -561,23 +561,20 @@ function updateModal() {
   // Update for high score and play again
 
   // Add event listener to PLAY AGAIN text
-  actionContainer.addEventListener("click", function () {
-    console.log("Restarting game...");
-    //set score and round to 0 when restarting
-    endGame();
-    restartGame();
-    newGame = true; 
-  });
+  actionContainer.addEventListener("click", handleRestart);
 
   console.log(actionContainer); // Log to ensure updates are made
 }
 
 function restartGame() {
   const modal = document.getElementById("gameOverModal");
+  const actionContainer = document.querySelector(".exit-sign-container");
   const signs = document.querySelector(".play-container");
   const notify = document.querySelector(".notify-sign");
   const instr = document.querySelector("#instructions");
   
+  //remove click
+  actionContainer.removeEventListener("click", handleRestart);
   //get rid of pop up modal
   modal.style.display = 'none';
 
@@ -596,6 +593,7 @@ function restartGame() {
   score = 0;
   roundNumber = 0;
   numSigns = 10;
+  sessionStorage.setItem("storedNumSigns", numSigns.toString());
 
   updateScoreDisplay();
   updateRoundDisplay(roundNumber);
@@ -604,6 +602,12 @@ function restartGame() {
   updateUI();
 }
 
+function handleRestart() {
+  console.log("Restarting game...");
+  endGame();
+  restartGame();
+  newGame = true;
+}
 
 function runTimer() {
   clearInterval(timerInterval);
