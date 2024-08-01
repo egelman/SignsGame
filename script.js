@@ -364,7 +364,7 @@ async function populateGame() {
 
 function correctClick(){
   const remainingTime = timer;
-  addPoints(remainingTime);
+  addPoints(remainingTime + 1);
   updateUI();
 }
 
@@ -375,19 +375,19 @@ function createPointsAnimation(amount, isPositive) {
   const pointsAdded = document.createElement("div");
   pointsAdded.className = 'points-animation';
   pointsAdded.textContent = isPositive ? `+${amount}` : `-${amount}`;
-  pointsAdded.style.color = isPositive ? '#14e40d' : '#e5232a';
+  pointsAdded.style.color = isPositive ? '#14e40d' : '#5df763';
   
   // Position the animation element
   const rect = scoreElement.getBoundingClientRect();
   pointsAdded.style.position = 'absolute';
-  pointsAdded.style.left = `${rect.left}px`;
-  pointsAdded.style.top = `${rect.bottom + 5}px`; // 5px below the score element
+  pointsAdded.style.left = `${rect.left + 15}px`;
+  pointsAdded.style.top = `${rect.bottom + 50}px`; 
   
   document.body.appendChild(pointsAdded);
 
   // Start the animation
   requestAnimationFrame(() => {
-    pointsAdded.style.transform = `translateY(-${rect.height + 10}px)`;
+    pointsAdded.style.transform = `translateY(-${rect.height + 15}px)`;
     pointsAdded.style.opacity = '0';
     pointsAdded.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
   });
