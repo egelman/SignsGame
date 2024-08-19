@@ -16,6 +16,8 @@ let poleContainer;
 
 const maxSignSize = 180; // Limits the sign size in pixels
 let timer = 5;
+let baseTimer = 5; // starting time for the first round
+let timerDecrease = 0.2;
 let timerInterval;
 let notifySrc = "";
 let newGame = true; 
@@ -363,7 +365,7 @@ async function populateGame() {
 }
 
 function correctClick(){
-  const remainingTime = timer;
+  const remainingTime = Math.ceil(timer);
   addPoints(remainingTime + 1);
   updateUI();
 }
@@ -399,20 +401,20 @@ function createPointsAnimation(amount, isPositive) {
 }
 
 function losePoints(int) {
-  score -= int;
+  score -= Math.round(int);
   sessionStorage.setItem("currentScore", score.toString());
   updateScoreDisplay();
-  createPointsAnimation(int, false);
+  createPointsAnimation(Math.round(int), false);
   if (score < 0) {
     endGame();
   }
 }
 
 function addPoints(int) {
-  score += int;
+  score += Math.round(int);
   sessionStorage.setItem("currentScore", score.toString());
   updateScoreDisplay();
-  createPointsAnimation(int, true);
+  createPointsAnimation(Math.round(int), true);
 }
 
 
@@ -618,6 +620,7 @@ function restartGame() {
   }
   
   // Reset game state
+  baseTimer = 5;
   score = 0;
   roundNumber = 0;
   numSigns = 10;
@@ -639,25 +642,37 @@ function handleRestart() {
 
 function runTimer() {
   clearInterval(timerInterval);
-  timer = 4;
+  
+  // Calculate the new timer value based on the round number
+  timer = Math.max(baseTimer - (roundNumber * timerDecrease), 1);
+  
   updateTimerDisplay();
   newGame = false;
 
   timerInterval = setInterval(() => {
-    timer--;
+    timer -= 0.1; 
     updateTimerDisplay();
 
     if (timer <= 0) {
       clearInterval(timerInterval);
       endGame();
     }
-  }, 1000);
+  }, 100); 
 }
 
-function updateScoreDisplay() {
-  const scoreElement = document.getElementById("score");
-  if (scoreElement) {
-    scoreElement.textContent = `Score: ${score}`;
+
+function updateTimerDisplay() {
+  const timerValueElement = document.getElementById("timerValue");
+  if (timerValueElement) {
+    const displaySeconds = Math.ceil(timer); // Round up to nearest second
+    timerValueElement.textContent = "  " + displaySeconds;
+    
+    if (displaySeconds !== parseInt(timerValueElement.textContent)) {
+      timerValueElement.classList.add('pulse');
+      setTimeout(() => {
+        timerValueElement.classList.remove('pulse');
+      }, 300);
+    }
   }
 }
 
